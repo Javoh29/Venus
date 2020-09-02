@@ -12,5 +12,8 @@ class App: Application(), KodeinAware {
             import(androidXModule(this@App))
         }
 
+    companion object {
+        var isOnStart: Boolean = true
+    }
 
 }

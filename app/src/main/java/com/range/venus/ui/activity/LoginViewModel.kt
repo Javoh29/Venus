@@ -7,10 +7,11 @@ import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.range.venus.App.Companion.isOnStart
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SingInViewModel() : ViewModel(), Observable {
+class LoginViewModel() : ViewModel(), Observable {
 
     private var activity: LoginActivity? = null
 
@@ -40,6 +41,7 @@ class SingInViewModel() : ViewModel(), Observable {
         delay(2000)
         progress.value = View.INVISIBLE
         if (activity != null){
+            isOnStart = false
             activity?.startActivity(Intent(activity, MainActivity::class.java))
             activity?.finish()
         }

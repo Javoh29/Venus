@@ -8,14 +8,14 @@ import com.range.venus.ui.base.BaseActivity
 
 class LoginActivity : BaseActivity(R.layout.activity_login) {
 
-    private lateinit var singInViewModel: SingInViewModel
+    private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
     override fun initView() {
-        singInViewModel = ViewModelProvider(this).get(SingInViewModel::class.java)
-        singInViewModel.setActivity(this)
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        loginViewModel.setActivity(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.viewModel = singInViewModel
+        binding.viewModel = loginViewModel
         binding.lifecycleOwner = this
     }
 }

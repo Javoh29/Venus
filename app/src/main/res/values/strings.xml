@@ -3,4 +3,6 @@
     <string name="text_id_num">ID raqam</string>
     <string name="text_password">Parol</string>
     <string name="text_enter">Kirish</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

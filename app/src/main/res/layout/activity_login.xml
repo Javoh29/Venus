@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.range.venus.ui.activity.SingInViewModel" />
+            type="com.range.venus.ui.activity.LoginViewModel" />
     </data>
 
     <FrameLayout
@@ -41,9 +41,9 @@
                 android:hint="@string/text_id_num"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="15dp"
-                android:text="@={viewModel.inputUserID}"
                 android:textColor="@android:color/tertiary_text_dark"
                 android:textSize="14sp"
+                android:text="@={viewModel.inputUserID}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgLogo" />
@@ -71,9 +71,9 @@
                     android:hint="@string/text_password"
                     android:inputType="numberPassword"
                     android:paddingHorizontal="15dp"
-                    android:text="@={viewModel.inputPassword}"
                     android:textColor="@android:color/tertiary_text_dark"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:text="@={viewModel.inputPassword}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,12 +86,12 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/btn_gradient"
                 android:fontFamily="@font/roboto_bold"
-                android:onClick="@={() -> viewModel.enterLogin()}"
                 android:text="@string/text_enter"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
-                android:enabled="@={viewModel.enable}"
+                android:onClick="@{()->viewModel.enterLogin()}"
+                android:enabled="@{viewModel.enable}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textInput" />
@@ -105,7 +105,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:theme="@style/AppTheme.ProgressBarAccent"
-                android:visibility="@={viewModel.progress}"
+                android:visibility="@{viewModel.progress}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_enter" />
