@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.range.venus.ui.activity.SingInViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activity.LoginActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingHorizontal="30dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="135dp"
+                android:layout_height="75dp"
+                android:src="@drawable/ic_splash_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_login"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30sp"
+                android:background="@drawable/edit_view_bg"
+                android:drawableStart="@drawable/ic_user"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/roboto_medium"
+                android:hint="@string/text_id_num"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="15dp"
+                android:text="@={viewModel.inputUserID}"
+                android:textColor="@android:color/tertiary_text_dark"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgLogo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInput"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_view_bg"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_login"
+                app:passwordToggleEnabled="true">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:drawableStart="@drawable/ic_lock"
+                    android:drawablePadding="15dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="@string/text_password"
+                    android:inputType="numberPassword"
+                    android:paddingHorizontal="15dp"
+                    android:text="@={viewModel.inputPassword}"
+                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_enter"
+                android:layout_width="190dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_gradient"
+                android:fontFamily="@font/roboto_bold"
+                android:onClick="@={() -> viewModel.enterLogin()}"
+                android:text="@string/text_enter"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:enabled="@={viewModel.enable}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textInput" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/btn_enter"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:theme="@style/AppTheme.ProgressBarAccent"
+                android:visibility="@={viewModel.progress}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_enter" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>
