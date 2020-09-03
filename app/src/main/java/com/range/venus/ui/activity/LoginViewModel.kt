@@ -2,16 +2,18 @@ package com.range.venus.ui.activity
 
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.range.venus.App.Companion.isOnStart
-import kotlinx.coroutines.delay
+import com.range.venus.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class LoginViewModel() : ViewModel(), Observable {
+class LoginViewModel: ViewModel(), Observable {
 
     private var activity: LoginActivity? = null
 
@@ -37,13 +39,55 @@ class LoginViewModel() : ViewModel(), Observable {
     }
 
     fun enterLogin() = viewModelScope.launch {
-        progress.value = View.VISIBLE
-        delay(2000)
-        progress.value = View.INVISIBLE
-        if (activity != null){
-            isOnStart = false
-            activity?.startActivity(Intent(activity, MainActivity::class.java))
-            activity?.finish()
+        when {
+            inputUserID.value == null -> {
+                Toast.makeText(
+                    activity,
+                    activity?.getString(R.string.text_err_id_enter),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            inputPassword.value == null -> {
+                Toast.makeText(
+                    activity,
+                    activity?.getString(R.string.text_err_password_enter),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            else -> {
+                enable.value = false
+                progress.value = View.VISIBLE
+                val params: HashMap<String, String> = HashMap()
+                params["user_id"] = inputUserID.value!!
+                params["pass"] = inputPassword.value!!
+                GlobalScope.launch(Dispatchers.IO) {
+                    val response = activity!!.apiService.checkLogin(params)
+                    if (response.isSuccessful && response.body()!!.isNotEmpty()) {
+                        activity!!.venusDao.insertUser(response.body()!![0])
+                        activity!!.unitProvider.saveUserID(response.body()!![0].userId)
+                        activity?.startActivity(Intent(activity, MainActivity::class.java))
+                        activity?.finish()
+                    } else if (response.isSuccessful && response.body()!!.isEmpty()) {
+                        activity?.runOnUiThread {
+                            Toast.makeText(
+                                activity,
+                                activity?.getString(R.string.text_wrong_password),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        activity?.runOnUiThread {
+                            Toast.makeText(
+                                activity,
+                                activity?.getString(R.string.text_err_connect),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    enable.value = true
+                    progress.value = View.INVISIBLE
+                }
+            }
         }
     }
 
@@ -53,6 +97,11 @@ class LoginViewModel() : ViewModel(), Observable {
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        activity = null
     }
 
 }

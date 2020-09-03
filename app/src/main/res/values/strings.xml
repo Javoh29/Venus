@@ -5,4 +5,12 @@
     <string name="text_enter">Kirish</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_contract_graph">Kontrakt hisobi</string>
+    <string name="text_table">Dars jadvali</string>
+    <string name="text_attendance">Davomat</string>
+    <string name="text_som">so`m</string>
+    <string name="text_err_id_enter">ID raqamini kiriting</string>
+    <string name="text_err_password_enter">Parolni kiriting</string>
+    <string name="text_wrong_password">ID yoki Parol notog`ri</string>
+    <string name="text_err_connect">Internet bilan aloqa yo‘q</string>
 </resources>

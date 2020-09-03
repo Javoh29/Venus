@@ -9,5 +9,14 @@
         android:id="@+id/homeFragment"
         android:name="com.range.venus.ui.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_contractFragment"
+            app:destination="@id/contractFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contractFragment"
+        android:name="com.range.venus.ui.fragment.ContractFragment"
+        android:label="fragment_contract"
+        tools:layout="@layout/fragment_contract" />
 </navigation>

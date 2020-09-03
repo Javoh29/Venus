@@ -41,7 +41,8 @@
                 android:hint="@string/text_id_num"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="15dp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
                 android:textSize="14sp"
                 android:text="@={viewModel.inputUserID}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +72,8 @@
                     android:hint="@string/text_password"
                     android:inputType="numberPassword"
                     android:paddingHorizontal="15dp"
-                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/colorPrimary"
                     android:textSize="14sp"
                     android:text="@={viewModel.inputPassword}"/>
 
