@@ -1,13 +1,15 @@
 package com.range.venus.ui.fragment
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.tabs.TabLayout
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import com.range.venus.R
 import com.range.venus.data.db.VenusDao
 import com.range.venus.databinding.FragmentContractBinding
@@ -23,6 +25,7 @@ class ContractFragment : Fragment(), KodeinAware {
     private val venusDao: VenusDao by instance()
     private lateinit var viewModel: ContractViewModel
     private lateinit var binding: FragmentContractBinding
+    private lateinit var dialogLoading: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,29 +45,22 @@ class ContractFragment : Fragment(), KodeinAware {
     }
 
     private fun bindUI() {
-        val list: ArrayList<String> = ArrayList()
-        list.add("Yanvar 2019")
-        list.add("Fevral 2019")
-        list.add("Mart 2019")
-        list.add("Aprel 2019")
-        list.add("May 2019")
-        list.add("Iyun 2019")
-        list.add("Iyul 2019")
-        list.add("Avgust 2019")
-        list.add("Sentyabr 2019")
-        list.add("Oktyabr 2019")
-        list.add("Noyabr 2019")
-        list.add("Dekabr 2019")
-        list.add("Yanvar")
-        list.add("Fevral")
-        list.add("Mart")
-        list.add("Aprel")
-        list.add("Iyun")
-        list.add("Avgust")
-        list.add("Sentyabr")
-        viewPager.adapter = ContractPagerAdapter(list, childFragmentManager)
-        viewPager.currentItem = list.size
-        tabLayout.setViewPager(viewPager)
+        dialogLoading = Dialog(requireContext(), R.style.Theme_AppCompat_Light_Dialog_Alert)
+        dialogLoading.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogLoading.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogLoading.setContentView(R.layout.dialog_data_download)
+        dialogLoading.setCanceledOnTouchOutside(false)
+        dialogLoading.setCancelable(false)
+        dialogLoading.show()
+
+        viewModel.listDate.observe(viewLifecycleOwner, {
+            if (it != null) {
+                viewPager.adapter = ContractPagerAdapter(it, childFragmentManager)
+                tabLayout.setViewPager(viewPager)
+                viewPager.currentItem = it.size
+                dialogLoading.dismiss()
+            }
+        })
     }
 
 }

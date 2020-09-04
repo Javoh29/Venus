@@ -8,6 +8,7 @@ import java.net.UnknownHostException
 class UnitProviderImpl(private val context: Context) : UnitProvider, PreferenceProvider(context) {
 
     private val USER_ID = "userID"
+    private val PASSWORD = "password"
 
     override suspend fun isOnline(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
@@ -28,6 +29,14 @@ class UnitProviderImpl(private val context: Context) : UnitProvider, PreferenceP
 
     override fun getUserID(): String {
         return preferences.getString(USER_ID, "")!!
+    }
+
+    override fun savePassword(pass: String) {
+        preferences.edit().putString(PASSWORD, pass).apply()
+    }
+
+    override fun getPassword(): String {
+        return preferences.getString(PASSWORD, "")!!
     }
 
 }

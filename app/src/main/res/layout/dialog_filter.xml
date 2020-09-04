@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheetContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/img_wallpaper2">
@@ -9,7 +10,6 @@
         android:id="@+id/imgClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="@{()->viewModel.onBack()}"
         android:padding="15dp"
         android:src="@drawable/ic_close"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,8 +20,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:src="@drawable/ic_checket"
+        android:src="@drawable/ic_checked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/RadioButton"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="15sp"
+        app:layout_constraintTop_toBottomOf="@id/imgClose"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <RadioButton
+            android:id="@+id/radioYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/text_sort_for_year"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="15sp"/>
+
+        <RadioButton
+            android:id="@+id/radioMoth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/text_sort_for_moth"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="15sp"/>
+
+        <RadioButton
+            android:id="@+id/radioAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/text_sort_for_all"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="15sp"/>
+
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinnerYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/MySpinner"
+        android:paddingHorizontal="10dp"
+        android:layout_marginEnd="15dp"
+        android:paddingVertical="5dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,7 +46,7 @@ class HomeFragment : Fragment(), KodeinAware {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        viewModel.setView(binding.root, venusDao, apiService, unitProvider)
+        viewModel.setView(binding.root, venusDao, apiService, unitProvider, requireActivity())
         bindUI()
     }
 

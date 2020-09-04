@@ -1,5 +1,7 @@
 package com.range.venus.ui.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
@@ -13,6 +15,7 @@ import com.range.venus.R
 import com.range.venus.data.db.VenusDao
 import com.range.venus.data.network.ApiService
 import com.range.venus.data.pravider.UnitProvider
+import com.range.venus.ui.activity.LoginActivity
 import com.range.venus.utils.lazyDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -24,6 +27,7 @@ class HomeViewModel : ViewModel(), Observable {
     private var venusDao: VenusDao? = null
     private var apiService: ApiService? = null
     private var unitProvider: UnitProvider? = null
+    private var activity: Activity? = null
     private var userID: String = ""
     var message = MutableLiveData<Int>()
     var showDialog = MutableLiveData<Boolean>()
@@ -37,11 +41,12 @@ class HomeViewModel : ViewModel(), Observable {
     @Bindable
     val tvGroupName = MutableLiveData<String>()
 
-    fun setView(mView: View, mVenusDao: VenusDao, api: ApiService, unit: UnitProvider) {
+    fun setView(mView: View, mVenusDao: VenusDao, api: ApiService, unit: UnitProvider, mActivity: Activity) {
         view = mView
         venusDao = mVenusDao
         apiService = api
         unitProvider = unit
+        activity = mActivity
         userID = unit.getUserID()
         loadData()
     }
@@ -76,6 +81,23 @@ class HomeViewModel : ViewModel(), Observable {
                     message.value = R.string.text_err_loading_data
                 }
             }
+            params["pass"] = unitProvider!!.getPassword()
+            val response3 = apiService?.checkLogin(params)
+            if (response3!!.isSuccessful && response3.body()!!.isNotEmpty()) {
+                venusDao?.insertUser(response3.body()!![0])
+            } else if (response3.body()!!.isEmpty()){
+                viewModelScope.launch(Dispatchers.IO) {
+                    message.value = R.string.text_wrong_password
+                }
+                unitProvider?.saveUserID("")
+                unitProvider?.savePassword("")
+                activity?.startActivity(Intent(activity, LoginActivity::class.java))
+                activity?.finish()
+            } else {
+                viewModelScope.launch(Dispatchers.IO) {
+                    message.value = R.string.text_err_loading_data
+                }
+            }
 
             viewModelScope.launch(Dispatchers.Main) { showDialog.value = false }
         }
@@ -90,7 +112,7 @@ class HomeViewModel : ViewModel(), Observable {
                 tvUniverName.value = model.universiteti
                 tvGroupName.value = model.guruhi
             }
-        }else return@launch
+        } else return@launch
     }
 
     fun openContract() {
@@ -109,5 +131,6 @@ class HomeViewModel : ViewModel(), Observable {
         view = null
         apiService = null
         venusDao = null
+        activity = null
     }
 }

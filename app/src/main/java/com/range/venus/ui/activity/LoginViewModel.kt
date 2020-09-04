@@ -65,6 +65,7 @@ class LoginViewModel: ViewModel(), Observable {
                     if (response.isSuccessful && response.body()!!.isNotEmpty()) {
                         activity!!.venusDao.insertUser(response.body()!![0])
                         activity!!.unitProvider.saveUserID(response.body()!![0].userId)
+                        activity!!.unitProvider.savePassword(response.body()!![0].parol)
                         activity?.startActivity(Intent(activity, MainActivity::class.java))
                         activity?.finish()
                     } else if (response.isSuccessful && response.body()!!.isEmpty()) {

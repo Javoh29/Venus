@@ -18,4 +18,8 @@
     <string name="text_data_loaded">Maʼlumotlar yuklandi</string>
     <string name="text_debit">qarzdor</string>
     <string name="text_credit">haqdor</string>
+    <string name="text_data_loading">Yuklanmoqda…</string>
+    <string name="text_sort_for_year">Yillik maʼlumotlar</string>
+    <string name="text_sort_for_moth">Oylik maʼlumotlar</string>
+    <string name="text_sort_for_all">Umumiy maʼlumotlar</string>
 </resources>

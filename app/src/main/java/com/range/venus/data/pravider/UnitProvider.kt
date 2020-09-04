@@ -7,4 +7,8 @@ interface UnitProvider {
     fun saveUserID(id: String)
 
     fun getUserID(): String
+
+    fun savePassword(pass: String)
+
+    fun getPassword(): String
 }

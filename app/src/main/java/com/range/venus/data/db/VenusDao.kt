@@ -27,6 +27,9 @@ interface VenusDao {
     @Query("select * from payments_table")
     fun getAllPayments(): LiveData<List<PaymentModel>>
 
+    @Query("select * from payments_table where sana like :date")
+    fun getPayment(date: String): List<PaymentModel>?
+
     @Query("DELETE FROM payments_table")
     fun deletePayments()
 
