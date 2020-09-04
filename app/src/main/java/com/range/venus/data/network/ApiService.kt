@@ -2,6 +2,8 @@ package com.range.venus.data.network
 
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.range.venus.data.model.DebitResponse
+import com.range.venus.data.model.PaymentsResponse
 import com.range.venus.data.model.UserResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,6 +20,14 @@ interface ApiService {
     @FormUrlEncoded
     @POST("gt_reg.php")
     suspend fun checkLogin(@FieldMap params: Map<String, String>): Response<UserResponse>
+
+    @FormUrlEncoded
+    @POST("get_tulovlar.php")
+    suspend fun getPayments(@FieldMap params: Map<String, String>): Response<PaymentsResponse>
+
+    @FormUrlEncoded
+    @POST("get_sum.php")
+    suspend fun getDebit(@FieldMap params: Map<String, String>): Response<DebitResponse>
 
     companion object {
         operator fun invoke(): ApiService {

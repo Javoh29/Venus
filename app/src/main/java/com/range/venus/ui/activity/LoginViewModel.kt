@@ -84,8 +84,10 @@ class LoginViewModel: ViewModel(), Observable {
                             ).show()
                         }
                     }
-                    enable.value = true
-                    progress.value = View.INVISIBLE
+                    activity?.runOnUiThread {
+                        enable.value = true
+                        progress.value = View.INVISIBLE
+                    }
                 }
             }
         }

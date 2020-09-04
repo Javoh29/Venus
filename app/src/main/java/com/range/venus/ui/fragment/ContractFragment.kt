@@ -9,12 +9,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import com.range.venus.R
+import com.range.venus.data.db.VenusDao
 import com.range.venus.databinding.FragmentContractBinding
 import com.range.venus.ui.adapter.ContractPagerAdapter
 import kotlinx.android.synthetic.main.fragment_contract.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
-class ContractFragment : Fragment() {
+class ContractFragment : Fragment(), KodeinAware {
 
+    override val kodein by closestKodein()
+    private val venusDao: VenusDao by instance()
     private lateinit var viewModel: ContractViewModel
     private lateinit var binding: FragmentContractBinding
 
@@ -30,7 +36,7 @@ class ContractFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ContractViewModel::class.java)
-        viewModel.setView(binding.root)
+        viewModel.setView(binding.root, venusDao)
         binding.viewModel = viewModel
         bindUI()
     }

@@ -5,7 +5,6 @@
     tools:context=".ui.fragment.ContractFragment">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.range.venus.ui.fragment.ContractViewModel" />
@@ -68,22 +67,34 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <FrameLayout
+                        android:id="@+id/frameLine"
+                        android:layout_width="3dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/view_frame_line"
+                        app:layout_constraintTop_toBottomOf="@id/imgBack"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tvDebit"/>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvStudentName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_marginHorizontal="15dp"
-                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@{viewModel.tvStudentName}"
                         android:textColor="@android:color/white"
-                        android:textSize="25sp"
+                        android:gravity="end"
+                        android:textSize="22sp"
+                        app:layout_constraintTop_toTopOf="@id/frameLine"
+                        app:layout_constraintEnd_toStartOf="@id/frameLine"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgBack" />
+                        app:layout_constraintBottom_toBottomOf="@id/frameLine"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvUniverName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
                         android:layout_marginTop="5dp"
@@ -93,12 +104,14 @@
                         android:text="@{viewModel.tvUniverName}"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvStudentName" />
+                        android:gravity="center_vertical"
+                        app:layout_constraintTop_toTopOf="@id/frameLine"
+                        app:layout_constraintStart_toStartOf="@id/frameLine"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvGroupName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
                         android:drawableStart="@drawable/ic_student"
@@ -107,8 +120,10 @@
                         android:text="@{viewModel.tvGroupName}"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvUniverName" />
+                        android:gravity="center_vertical"
+                        app:layout_constraintTop_toBottomOf="@id/tvUniverName"
+                        app:layout_constraintStart_toStartOf="@id/frameLine"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvDebit"
@@ -119,14 +134,16 @@
                         android:text="@{viewModel.tvDebit}"
                         android:textColor="@color/colorAccent"
                         android:textSize="30sp"
+                        android:layout_marginBottom="45dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvGroupName" />
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="@string/text_som"
+                        android:text="@{viewModel.tvSom}"
                         android:textColor="@color/colorAccent"
                         android:textSize="12sp"
                         android:layout_marginStart="10dp"

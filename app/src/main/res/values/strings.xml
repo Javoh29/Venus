@@ -13,4 +13,9 @@
     <string name="text_err_password_enter">Parolni kiriting</string>
     <string name="text_wrong_password">ID yoki Parol notog`ri</string>
     <string name="text_err_connect">Internet bilan aloqa yo‘q</string>
+    <string name="text_loading_data">Maʼlumotlar yuklanmoqda</string>
+    <string name="text_err_loading_data">Maʼlumotlarni yuklashda muammo yuz berdi</string>
+    <string name="text_data_loaded">Maʼlumotlar yuklandi</string>
+    <string name="text_debit">qarzdor</string>
+    <string name="text_credit">haqdor</string>
 </resources>

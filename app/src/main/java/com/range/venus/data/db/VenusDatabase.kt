@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.range.venus.data.db.entities.DebitModel
+import com.range.venus.data.db.entities.PaymentModel
 import com.range.venus.data.db.entities.UserModel
 
 @Database(
-    entities = [UserModel::class],
-    version = 1,
+    entities = [UserModel::class, PaymentModel::class, DebitModel::class],
+    version = 2,
     exportSchema = false
 )
 abstract class VenusDatabase: RoomDatabase() {

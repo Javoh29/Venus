@@ -1,6 +1,6 @@
 package com.range.venus
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.range.venus.data.db.VenusDatabase
 import com.range.venus.data.network.ApiService
 import com.range.venus.data.pravider.UnitProvider
@@ -12,7 +12,11 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
-class App : Application(), KodeinAware {
+class App : MultiDexApplication(), KodeinAware {
+
+    companion object {
+        var isLoadData: Boolean = true
+    }
 
     override val kodein: Kodein
         get() = Kodein.lazy {
