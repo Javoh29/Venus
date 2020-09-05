@@ -4,12 +4,15 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
+import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
 import com.range.venus.R
 import com.range.venus.data.db.VenusDao
 import com.range.venus.databinding.FragmentContractBinding
@@ -53,12 +56,31 @@ class ContractFragment : Fragment(), KodeinAware {
         dialogLoading.setCancelable(false)
         dialogLoading.show()
 
+
         viewModel.listDate.observe(viewLifecycleOwner, {
             if (it != null) {
                 viewPager.adapter = ContractPagerAdapter(it, childFragmentManager)
                 tabLayout.setViewPager(viewPager)
-                viewPager.currentItem = it.size
+                Handler(Looper.myLooper()!!).postDelayed({viewPager.setCurrentItem(it.size, true)}, 150)
                 dialogLoading.dismiss()
+            }
+        })
+
+        viewModel.dialogTop.observe(viewLifecycleOwner, {
+            if (it != null) {
+                if (it){
+                    dialogTop.visibility = View.VISIBLE
+                    dialogTop.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.from_top)
+                } else {
+                    dialogTop.visibility = View.GONE
+                    dialogTop.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.from_bottom)
+                }
+            }
+        })
+
+        viewModel.message.observe(viewLifecycleOwner, {
+            if (it != null) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         })
     }

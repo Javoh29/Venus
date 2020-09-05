@@ -8,6 +8,40 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/frameNotFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="50dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="30sp"
+                android:src="@drawable/img_empty"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/text_not_found"
+                android:layout_gravity="bottom"/>
+
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

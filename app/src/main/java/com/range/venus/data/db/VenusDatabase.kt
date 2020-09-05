@@ -10,7 +10,7 @@ import com.range.venus.data.db.entities.UserModel
 
 @Database(
     entities = [UserModel::class, PaymentModel::class, DebitModel::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class VenusDatabase: RoomDatabase() {

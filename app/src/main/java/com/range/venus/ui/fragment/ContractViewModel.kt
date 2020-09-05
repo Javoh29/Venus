@@ -1,17 +1,13 @@
 package com.range.venus.ui.fragment
 
 import android.annotation.SuppressLint
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
 import com.range.venus.R
 import com.range.venus.data.db.VenusDao
 import com.range.venus.data.model.DateModel
@@ -29,8 +25,21 @@ class ContractViewModel : ViewModel(), Observable {
     private var view: View? = null
     private var venusDao: VenusDao? = null
     private val decimalFormat: DecimalFormat = DecimalFormat("###,###.##")
-    lateinit var dialogCalendar: DialogPlus
+    private var course: Int = 0
+    private val simpleYear = SimpleDateFormat("yyyy")
+    private val simpleMoth = SimpleDateFormat("MM")
+    private val simpleDate = SimpleDateFormat("MM.yyyy")
+    val message = MutableLiveData<String>()
+    val dialogTop = MutableLiveData<Boolean>()
     val listDate = MutableLiveData<List<DateModel>>()
+    val radioChecked = MutableLiveData<Int>()
+    val listYear: ArrayList<String> = ArrayList()
+
+    @Bindable
+    val spinnerVisible = MutableLiveData<Int>()
+
+    @Bindable
+    val selectYear = MutableLiveData<Int>()
 
     @Bindable
     val tvStudentName = MutableLiveData<String>()
@@ -44,19 +53,25 @@ class ContractViewModel : ViewModel(), Observable {
     @Bindable
     val tvDebit = MutableLiveData<String>()
 
+    @Bindable
     val tvSom = MutableLiveData<String>()
 
     fun setView(mView: View, mVenusDao: VenusDao) {
         view = mView
         venusDao = mVenusDao
         loadData()
-        dialogCalendar = DialogPlus.newDialog(view!!.context)
-                .setContentHolder(ViewHolder(R.layout.dialog_filter))
-                .setGravity(Gravity.TOP)
-                .setContentHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setFooter(null)
-                .setExpanded(false)
-                .create()
+
+        radioChecked.value = R.id.radioAll
+
+        radioChecked.observeForever {
+            if (it != null) {
+                if (it == R.id.radioMoth) {
+                    spinnerVisible.value = View.VISIBLE
+                } else {
+                    spinnerVisible.value = View.GONE
+                }
+            }
+        }
     }
 
     private fun loadData() {
@@ -69,7 +84,8 @@ class ContractViewModel : ViewModel(), Observable {
                     tvGroupName.value = "${model.yonalishi}, ${model.guruhi}"
                 }
                 viewModelScope.launch(Dispatchers.IO) {
-                    bindList(model.kursi.toInt())
+                    course = model.kursi.toInt()
+                    bindSortAll()
                 }
             } else return@launch
         }
@@ -90,21 +106,27 @@ class ContractViewModel : ViewModel(), Observable {
         }
     }
 
-    private fun bindList(course: Int) {
+    private fun bindSortAll() {
         val list: ArrayList<DateModel> = ArrayList()
-        val simpleMoth = SimpleDateFormat("MM")
-        val simpleYear = SimpleDateFormat("yyyy")
-        val simpleDate = SimpleDateFormat("MM.yyyy")
-
+        listYear.clear()
         val currentYear = simpleYear.format(Date()).toInt()
         val currentDate = simpleDate.format(Date())
         var oldYear: Int = if (course == 1) {
             if (simpleMoth.format(Date()).toInt() > 9) {
+                listYear.add(currentYear.toString())
                 simpleYear.format(Date()).toInt()
             } else {
+                var y = currentYear
+                for (i in 1..course) {
+                    listYear.add(y--.toString())
+                }
                 simpleYear.format(Date()).toInt() - course
             }
         } else {
+            var y = currentYear
+            for (i in 1..course) {
+                listYear.add(y--.toString())
+            }
             simpleYear.format(Date()).toInt() - course
         }
         var end = true
@@ -140,22 +162,78 @@ class ContractViewModel : ViewModel(), Observable {
         }
     }
 
+    private fun bindSortYear() {
+        val list: ArrayList<DateModel> = ArrayList()
+        listYear.forEach {
+            list.add(DateModel(textDate = "$it ${view!!.context.getString(R.string.text_year)}", formatDate = it))
+        }
+        viewModelScope.launch(Dispatchers.Main) {
+            listDate.value = list
+        }
+    }
+
+    private fun bindSortMoth() {
+        val list: ArrayList<DateModel> = ArrayList()
+        if (listYear[selectYear.value!!] == simpleYear.format(Date())) {
+            val moth: Int = simpleMoth.format(Date()).toInt()
+            if (course == 1) {
+                if (moth >= 9) {
+                    for (i in 9..moth) {
+                        list.add(DateModel(textDate = getMoth(i), formatDate = "${i}.${listYear[selectYear.value!!]}"))
+                    }
+                } else {
+                    for (i in 1..moth) {
+                        list.add(DateModel(textDate = getMoth(i), formatDate = "${i}.${listYear[selectYear.value!!]}"))
+                    }
+                }
+            } else {
+                for (i in 1..moth) {
+                    list.add(DateModel(textDate = getMoth(i), formatDate = "${i}.${listYear[selectYear.value!!]}"))
+                }
+            }
+        } else {
+            for (i in 1..12) {
+                list.add(DateModel(textDate = "${getMoth(i)} ${listYear[selectYear.value!!]}", formatDate = "${i}.${listYear[selectYear.value!!]}"))
+            }
+        }
+        viewModelScope.launch(Dispatchers.Main) {
+            listDate.value = list
+        }
+    }
+
     private fun getMoth(moth: Int): String {
         return when (moth) {
-            1 -> "Yanvar"
-            2 -> "Fevral"
-            3 -> "Mart"
-            4 -> "Aprel"
-            5 -> "May"
-            6 -> "Iyun"
-            7 -> "Iyul"
-            8 -> "Avgust"
-            9 -> "Sentyabr"
-            10 -> "Oktyabr"
-            11 -> "Noyabr"
-            12 -> "Dekabr"
+            1 -> view!!.context.getString(R.string.text_yan)
+            2 -> view!!.context.getString(R.string.text_fev)
+            3 -> view!!.context.getString(R.string.text_mar)
+            4 -> view!!.context.getString(R.string.text_apr)
+            5 -> view!!.context.getString(R.string.text_may)
+            6 -> view!!.context.getString(R.string.text_jun)
+            7 -> view!!.context.getString(R.string.text_jul)
+            8 -> view!!.context.getString(R.string.text_avg)
+            9 -> view!!.context.getString(R.string.text_snt)
+            10 -> view!!.context.getString(R.string.text_okt)
+            11 -> view!!.context.getString(R.string.text_nyb)
+            12 -> view!!.context.getString(R.string.text_dek)
             else -> ""
         }
+    }
+
+    fun openDialog() {
+        dialogTop.value = true
+    }
+
+    fun closeDialog() {
+        dialogTop.value = false
+    }
+
+    fun enterDialog() {
+        when (radioChecked.value) {
+            R.id.radioYear -> bindSortYear()
+            R.id.radioMoth -> bindSortMoth()
+            R.id.radioAll -> bindSortAll()
+        }
+        dialogTop.value = false
     }
 
     fun onBack() {

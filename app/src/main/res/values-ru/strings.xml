@@ -1,0 +1,39 @@
+<resources>
+    <string name="text_id_num">ID номер</string>
+    <string name="text_password">Пароль</string>
+    <string name="text_enter">Войти</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_contract_graph">Контрактный счет</string>
+    <string name="text_table">Расписание уроков</string>
+    <string name="text_attendance">Посещаемость</string>
+    <string name="text_som">сум</string>
+    <string name="text_err_id_enter">Введите номер ID</string>
+    <string name="text_err_password_enter">Введите пароль</string>
+    <string name="text_wrong_password">Неверный ID или пароль</string>
+    <string name="text_err_connect">Нет соединения с интернетом</string>
+    <string name="text_loading_data">Данные загружаются</string>
+    <string name="text_err_loading_data">При загрузке данных возникла проблема</string>
+    <string name="text_data_loaded">Данные загружены</string>
+    <string name="text_debit">должник</string>
+    <string name="text_credit">кредитор</string>
+    <string name="text_data_loading">Загрузка…</string>
+    <string name="text_sort_for_year">Годовые данные</string>
+    <string name="text_sort_for_moth">Ежемесячные данные</string>
+    <string name="text_sort_for_all">Общая информация</string>
+    <string name="text_yan">Январь</string>
+    <string name="text_fev">Февраль</string>
+    <string name="text_mar">Март</string>
+    <string name="text_apr">Апрель</string>
+    <string name="text_may">Май</string>
+    <string name="text_jun">Июнь</string>
+    <string name="text_jul">Июль</string>
+    <string name="text_avg">Август</string>
+    <string name="text_snt">Сентябрь</string>
+    <string name="text_okt">Октябрь</string>
+    <string name="text_nyb">Ноябрь</string>
+    <string name="text_dek">Декабрь</string>
+    <string name="text_year">Год</string>
+    <string name="text_not_found">Для этого интервала данных не найдено</string>
+    <string name="text_soon">Этот раздел скоро будет запущен!</string>
+</resources>

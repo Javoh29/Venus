@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Venus</string>
+    <string name="app_name" translatable="false">Venus</string>
     <string name="text_id_num">ID raqam</string>
     <string name="text_password">Parol</string>
     <string name="text_enter">Kirish</string>
@@ -22,4 +22,19 @@
     <string name="text_sort_for_year">Yillik maʼlumotlar</string>
     <string name="text_sort_for_moth">Oylik maʼlumotlar</string>
     <string name="text_sort_for_all">Umumiy maʼlumotlar</string>
+    <string name="text_yan">Yanvar</string>
+    <string name="text_fev">Fevral</string>
+    <string name="text_mar">Mart</string>
+    <string name="text_apr">Aprel</string>
+    <string name="text_may">May</string>
+    <string name="text_jun">Iyun</string>
+    <string name="text_jul">Iyul</string>
+    <string name="text_avg">Avgust</string>
+    <string name="text_snt">Sentyabr</string>
+    <string name="text_okt">Oktyabr</string>
+    <string name="text_nyb">Noyabr</string>
+    <string name="text_dek">Dekabr</string>
+    <string name="text_year">Yil</string>
+    <string name="text_not_found">Ushbu oraliqda maʼlumot topilmadi</string>
+    <string name="text_soon">Ushbu bo`lim tez kunda ishga tushadi!</string>
 </resources>

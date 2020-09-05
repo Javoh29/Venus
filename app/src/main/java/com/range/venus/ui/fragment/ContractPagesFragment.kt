@@ -45,14 +45,19 @@ class ContractPagesFragment : Fragment(R.layout.fragment_contract_pages), Kodein
         GlobalScope.launch(Dispatchers.IO) {
             val list = lazyDeferred { venusDao.getPayment("%$date%") }.value.await()
             if (list != null) {
-                bindUI(list)
+                if (list.isNotEmpty()) {
+                    bindUI(list)
+                } else {
+                    requireActivity().runOnUiThread {  frameNotFound.visibility = View.VISIBLE }
+                }
             } else return@launch
         }
     }
 
     private fun bindUI(list: List<PaymentModel>) {
-        recyclerView.adapter =  ContractItemAdapter(list)
-
+        requireActivity().runOnUiThread {
+            recyclerView.adapter =  ContractItemAdapter(list)
+        }
     }
 
 }

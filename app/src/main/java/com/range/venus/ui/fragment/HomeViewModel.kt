@@ -85,7 +85,7 @@ class HomeViewModel : ViewModel(), Observable {
             val response3 = apiService?.checkLogin(params)
             if (response3!!.isSuccessful && response3.body()!!.isNotEmpty()) {
                 venusDao?.insertUser(response3.body()!![0])
-            } else if (response3.body()!!.isEmpty()){
+            } else if (response3.body()!!.isEmpty()) {
                 viewModelScope.launch(Dispatchers.IO) {
                     message.value = R.string.text_wrong_password
                 }
@@ -115,9 +115,13 @@ class HomeViewModel : ViewModel(), Observable {
         } else return@launch
     }
 
+    fun openSoon() {
+        Navigation.findNavController(view!!).navigate(HomeFragmentDirections.actionHomeFragmentToTableFragment())
+    }
+
     fun openContract() {
         Navigation.findNavController(view!!)
-            .navigate(HomeFragmentDirections.actionHomeFragmentToContractFragment())
+                .navigate(HomeFragmentDirections.actionHomeFragmentToContractFragment())
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

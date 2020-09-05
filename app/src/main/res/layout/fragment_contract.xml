@@ -5,6 +5,7 @@
     tools:context=".ui.fragment.ContractFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.range.venus.ui.fragment.ContractViewModel" />
@@ -55,9 +56,9 @@
                         android:id="@+id/imgCalendar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> viewModel.openDialog()}"
                         android:padding="15dp"
                         android:src="@drawable/ic_calendar"
-                        android:onClick="@{()->viewModel.dialogCalendar.show()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,10 +67,10 @@
                         android:layout_width="3dp"
                         android:layout_height="0dp"
                         android:background="@drawable/view_frame_line"
-                        app:layout_constraintTop_toBottomOf="@id/imgBack"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tvDebit"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/tvDebit"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imgBack" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvStudentName"
@@ -77,14 +78,14 @@
                         android:layout_height="0dp"
                         android:layout_marginHorizontal="15dp"
                         android:fontFamily="@font/roboto_medium"
+                        android:gravity="end"
                         android:text="@{viewModel.tvStudentName}"
                         android:textColor="@android:color/white"
-                        android:gravity="end"
                         android:textSize="22sp"
-                        app:layout_constraintTop_toTopOf="@id/frameLine"
+                        app:layout_constraintBottom_toBottomOf="@id/frameLine"
                         app:layout_constraintEnd_toStartOf="@id/frameLine"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="@id/frameLine"/>
+                        app:layout_constraintTop_toTopOf="@id/frameLine" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvUniverName"
@@ -95,13 +96,13 @@
                         android:drawableStart="@drawable/ic_univer"
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/roboto_medium"
+                        android:gravity="center_vertical"
                         android:text="@{viewModel.tvUniverName}"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
-                        android:gravity="center_vertical"
-                        app:layout_constraintTop_toTopOf="@id/frameLine"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/frameLine"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toTopOf="@id/frameLine" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvGroupName"
@@ -111,39 +112,133 @@
                         android:drawableStart="@drawable/ic_student"
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/roboto_medium"
+                        android:gravity="center_vertical"
                         android:text="@{viewModel.tvGroupName}"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
-                        android:gravity="center_vertical"
-                        app:layout_constraintTop_toBottomOf="@id/tvUniverName"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/frameLine"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvUniverName" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvDebit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
+                        android:layout_marginBottom="45dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@{viewModel.tvDebit}"
                         android:textColor="@color/colorAccent"
                         android:textSize="30sp"
-                        android:layout_marginBottom="45dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@{viewModel.tvSom}"
                         android:textColor="@color/colorAccent"
                         android:textSize="12sp"
-                        android:layout_marginStart="10dp"
                         app:layout_constraintBottom_toBottomOf="@id/tvDebit"
-                        app:layout_constraintTop_toTopOf="@id/tvDebit"
-                        app:layout_constraintStart_toEndOf="@id/tvDebit" />
+                        app:layout_constraintStart_toEndOf="@id/tvDebit"
+                        app:layout_constraintTop_toTopOf="@id/tvDebit" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/dialogTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/img_wallpaper2"
+                    android:visibility="gone"
+                    app:layout_collapseMode="parallax">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_close"
+                        android:onClick="@{()-> viewModel.closeDialog()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgOk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_checked"
+                        android:onClick="@{()-> viewModel.enterDialog()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginBottom="15sp"
+                        android:theme="@style/RadioButton"
+                        android:checkedButton="@={viewModel.radioChecked}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imgClose">
+
+                        <RadioButton
+                            android:id="@+id/radioYear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/text_sort_for_year"
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp" />
+
+                        <RadioButton
+                            android:id="@+id/radioMoth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/text_sort_for_moth"
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp" />
+
+                        <RadioButton
+                            android:id="@+id/radioAll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/text_sort_for_all"
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp" />
+
+                    </RadioGroup>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerYear"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:theme="@style/MySpinner"
+                        android:entries="@{viewModel.listYear}"
+                        android:spinnerMode="dialog"
+                        android:visibility="@{viewModel.spinnerVisible}"
+                        android:selectedItemPosition="@={viewModel.selectYear}"
+                        app:layout_constraintBottom_toBottomOf="@id/radioGroup"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/radioGroup" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -160,13 +255,14 @@
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"/>
+                android:layout_marginTop="45dp" />
 
             <com.ogaclejapan.smarttablayout.SmartTabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:background="@android:color/white"
+                android:layout_gravity="center_horizontal"
                 app:stl_clickable="true"
                 app:stl_defaultTabBackground="?attr/selectableItemBackground"
                 app:stl_defaultTabTextAllCaps="false"
@@ -191,8 +287,7 @@
                 app:stl_overlineThickness="0dp"
                 app:stl_titleOffset="24dp"
                 app:stl_underlineColor="#00000000"
-                app:stl_underlineThickness="1dp"
-                app:layout_constraintTop_toBottomOf="@id/imgWallpaper"/>
+                app:stl_underlineThickness="1dp" />
 
         </FrameLayout>
 
