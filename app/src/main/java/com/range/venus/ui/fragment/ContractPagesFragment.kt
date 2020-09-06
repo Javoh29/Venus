@@ -48,14 +48,16 @@ class ContractPagesFragment : Fragment(R.layout.fragment_contract_pages), Kodein
                 if (list.isNotEmpty()) {
                     bindUI(list)
                 } else {
-                    requireActivity().runOnUiThread {  frameNotFound.visibility = View.VISIBLE }
+                    GlobalScope.launch(Dispatchers.Main) {
+                        frameNotFound.visibility = View.VISIBLE
+                    }
                 }
             } else return@launch
         }
     }
 
     private fun bindUI(list: List<PaymentModel>) {
-        requireActivity().runOnUiThread {
+        GlobalScope.launch(Dispatchers.Main) {
             recyclerView.adapter =  ContractItemAdapter(list)
         }
     }
