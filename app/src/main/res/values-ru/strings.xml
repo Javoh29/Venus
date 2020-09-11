@@ -4,8 +4,8 @@
     <string name="text_enter">Войти</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="text_contract_graph">Контрактный счет</string>
-    <string name="text_table">Расписание уроков</string>
+    <string name="text_contract_graph">Контрактный\nсчет</string>
+    <string name="text_table">Расписание\nуроков</string>
     <string name="text_attendance">Посещаемость</string>
     <string name="text_som">сум</string>
     <string name="text_err_id_enter">Введите номер ID</string>

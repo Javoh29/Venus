@@ -32,6 +32,7 @@ class TableFragment: Fragment(), KodeinAware {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         viewModel.setView(binding.root, venusDao)
+
     }
 
 }

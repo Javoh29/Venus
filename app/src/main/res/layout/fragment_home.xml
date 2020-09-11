@@ -96,68 +96,104 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvContract"
+        <FrameLayout
+            android:id="@+id/frameContract"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginHorizontal="20dp"
             android:background="@drawable/btn_gradient"
-            android:paddingHorizontal="15dp"
-            android:drawableStart="@drawable/ic_contract"
-            android:drawablePadding="15dp"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:gravity="center_vertical"
-            android:text="@string/text_contract_graph"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_marginTop="60dp"
             android:onClick="@{()->viewModel.openContract()}"
             app:layout_constraintTop_toBottomOf="@id/imgLogo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@id/frameTable">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_contract"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvContract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:text="@string/text_contract_graph"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintTop_toBottomOf="@id/frameContract"
+            app:layout_constraintStart_toStartOf="@id/frameContract"
+            app:layout_constraintEnd_toEndOf="@id/frameContract"/>
+
+        <FrameLayout
+            android:id="@+id/frameTable"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/btn_gradient"
+            android:layout_marginTop="60dp"
+            android:onClick="@{()->viewModel.openSoon()}"
+            app:layout_constraintTop_toBottomOf="@id/imgLogo"
+            app:layout_constraintStart_toEndOf="@id/frameContract"
+            app:layout_constraintEnd_toStartOf="@id/frameAttendance">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_table"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTable"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/btn_gradient"
-            android:paddingHorizontal="15dp"
-            android:drawableStart="@drawable/ic_table"
-            android:drawablePadding="15dp"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:gravity="center"
             android:text="@string/text_table"
-            android:clickable="true"
-            android:focusable="true"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/frameTable"
+            app:layout_constraintStart_toStartOf="@id/frameTable"
+            app:layout_constraintEnd_toEndOf="@id/frameTable"/>
+
+        <FrameLayout
+            android:id="@+id/frameAttendance"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/btn_gradient"
+            android:layout_marginTop="60dp"
             android:onClick="@{()->viewModel.openSoon()}"
-            app:layout_constraintTop_toBottomOf="@id/tvContract"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/imgLogo"
+            app:layout_constraintStart_toEndOf="@id/frameTable"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_attendance"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvAttendance"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/btn_gradient"
-            android:paddingHorizontal="15dp"
-            android:drawableStart="@drawable/ic_attendance"
-            android:drawablePadding="15dp"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:gravity="center"
             android:text="@string/text_attendance"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{()->viewModel.openSoon()}"
-            app:layout_constraintTop_toBottomOf="@id/tvTable"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintTop_toBottomOf="@id/frameAttendance"
+            app:layout_constraintStart_toStartOf="@id/frameAttendance"
+            app:layout_constraintEnd_toEndOf="@id/frameAttendance"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

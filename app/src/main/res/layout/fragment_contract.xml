@@ -120,6 +120,15 @@
                         app:layout_constraintStart_toStartOf="@id/frameLine"
                         app:layout_constraintTop_toBottomOf="@id/tvUniverName" />
 
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/frame_gradient"
+                        app:layout_constraintTop_toTopOf="@id/tvDebit"
+                        app:layout_constraintBottom_toBottomOf="@id/tvDebit"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tvSom"/>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvDebit"
                         android:layout_width="wrap_content"

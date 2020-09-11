@@ -5,8 +5,8 @@
     <string name="text_enter">Kirish</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="text_contract_graph">Kontrakt hisobi</string>
-    <string name="text_table">Dars jadvali</string>
+    <string name="text_contract_graph">Kontrakt\nhisobi</string>
+    <string name="text_table">Dars\njadvali</string>
     <string name="text_attendance">Davomat</string>
     <string name="text_som">so`m</string>
     <string name="text_err_id_enter">ID raqamini kiriting</string>
@@ -37,4 +37,7 @@
     <string name="text_year">Yil</string>
     <string name="text_not_found">Ushbu oraliqda maʼlumot topilmadi</string>
     <string name="text_soon">Ushbu bo`lim tez kunda ishga tushadi!</string>
+    <string name="text_main_table">Asosiy</string>
+    <string name="text_deno_table">Surat</string>
+    <string name="text_numer_table">Maxraj</string>
 </resources>
