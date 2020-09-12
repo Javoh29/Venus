@@ -36,4 +36,20 @@
     <string name="text_year">Год</string>
     <string name="text_not_found">Для этого интервала данных не найдено</string>
     <string name="text_soon">Этот раздел скоро будет запущен!</string>
+    <string name="text_main_table">Главный</string>
+    <string name="text_deno_table">Знам…</string>
+    <string name="text_numer_table">Числ…</string>
+    <string name="text_lecture">Лекция</string>
+    <string name="text_pracrice">Практика</string>
+    <string name="text_lab">Лаборатория</string>
+    <string name="text_room">Аудитория</string>
+
+    <array name="Weeks">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+    </array>
 </resources>

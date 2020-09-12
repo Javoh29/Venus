@@ -20,6 +20,7 @@ import com.range.venus.utils.lazyDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class HomeViewModel : ViewModel(), Observable {
 
@@ -53,53 +54,72 @@ class HomeViewModel : ViewModel(), Observable {
 
     private fun loadData() = viewModelScope.launch(Dispatchers.IO) {
         if (isLoadData && unitProvider!!.isOnline()) {
-            viewModelScope.launch(Dispatchers.Main) { showDialog.value = true }
-            val params: HashMap<String, String> = HashMap()
-            params["user_id"] = userID
-            val response = apiService?.getPayments(params)
+            try {
+                viewModelScope.launch(Dispatchers.Main) { showDialog.value = true }
+                val params: HashMap<String, String> = HashMap()
+                params["user_id"] = userID
+                val response = apiService?.getPayments(params)
 
-            if (response!!.isSuccessful && response.body()!!.isNotEmpty()) {
-                response.body()!!.forEach {
-                    venusDao?.insertPayments(it)
+                if (response!!.isSuccessful && response.body()!!.isNotEmpty()) {
+                    response.body()!!.forEach {
+                        venusDao?.insertPayments(it)
+                    }
+                } else {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        message.value = R.string.text_err_loading_data
+                    }
                 }
-                isLoadData = false
-                viewModelScope.launch(Dispatchers.Main) {
-                    message.value = R.string.text_data_loaded
-                    message.value = 0
-                }
-            } else {
-                viewModelScope.launch(Dispatchers.Main) {
-                    message.value = R.string.text_err_loading_data
-                }
-            }
 
-            val response2 = apiService?.getDebit(params)
-            if (response2!!.isSuccessful && response2.body()!!.isNotEmpty()) {
-                venusDao?.insertDebit(response2.body()!![0])
-            } else {
-                viewModelScope.launch(Dispatchers.IO) {
-                    message.value = R.string.text_err_loading_data
+                val response2 = apiService?.getDebit(params)
+                if (response2!!.isSuccessful && response2.body()!!.isNotEmpty()) {
+                    venusDao?.insertDebit(response2.body()!![0])
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        message.value = R.string.text_err_loading_data
+                    }
                 }
-            }
-            params["pass"] = unitProvider!!.getPassword()
-            val response3 = apiService?.checkLogin(params)
-            if (response3!!.isSuccessful && response3.body()!!.isNotEmpty()) {
-                venusDao?.insertUser(response3.body()!![0])
-            } else if (response3.body()!!.isEmpty()) {
-                viewModelScope.launch(Dispatchers.IO) {
-                    message.value = R.string.text_wrong_password
+                params["pass"] = unitProvider!!.getPassword()
+                val response3 = apiService?.checkLogin(params)
+                if (response3!!.isSuccessful && response3.body()!!.isNotEmpty()) {
+                    venusDao?.insertUser(response3.body()!![0])
+                } else if (response3.body()!!.isEmpty()) {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        message.value = R.string.text_wrong_password
+                    }
+                    unitProvider?.saveUserID("")
+                    unitProvider?.savePassword("")
+                    activity?.startActivity(Intent(activity, LoginActivity::class.java))
+                    activity?.finish()
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        message.value = R.string.text_err_loading_data
+                    }
                 }
-                unitProvider?.saveUserID("")
-                unitProvider?.savePassword("")
-                activity?.startActivity(Intent(activity, LoginActivity::class.java))
-                activity?.finish()
-            } else {
-                viewModelScope.launch(Dispatchers.IO) {
-                    message.value = R.string.text_err_loading_data
-                }
-            }
 
-            viewModelScope.launch(Dispatchers.Main) { showDialog.value = false }
+                params.clear()
+                params["guruh_id"] = "1"
+                val response4 = apiService?.getTable(params)
+                if (response4!!.isSuccessful && response4.body()!!.size >= 5) {
+                    venusDao?.deleteLessons()
+                    response4.body()!!.forEach {
+                        venusDao?.insertLessons(it)
+                    }
+                    isLoadData = false
+                    viewModelScope.launch(Dispatchers.Main) {
+                        message.value = R.string.text_data_loaded
+                        message.value = 0
+                    }
+                } else {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        message.value = R.string.text_err_loading_data
+                    }
+                }
+
+                viewModelScope.launch(Dispatchers.Main) { showDialog.value = false }
+
+            } catch (e: Exception) {
+                viewModelScope.launch(Dispatchers.Main) { showDialog.value = false }
+            }
         }
         getUser()
     }

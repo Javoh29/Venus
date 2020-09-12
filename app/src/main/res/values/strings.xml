@@ -40,4 +40,17 @@
     <string name="text_main_table">Asosiy</string>
     <string name="text_deno_table">Surat</string>
     <string name="text_numer_table">Maxraj</string>
+    <string name="text_lecture">Leksiya</string>
+    <string name="text_pracrice">Amaliyot</string>
+    <string name="text_lab">Laboratory</string>
+    <string name="text_room">Xona</string>
+
+    <array name="Weeks">
+        <item>Dushanba</item>
+        <item>Seshanba</item>
+        <item>Chorshanba</item>
+        <item>Payshanba</item>
+        <item>Juma</item>
+        <item>Shanba</item>
+    </array>
 </resources>

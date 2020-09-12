@@ -6,15 +6,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.range.venus.R
 import com.range.venus.data.db.VenusDao
+import com.range.venus.data.db.entities.TableModel
+import com.range.venus.ui.adapter.LessonsAdapter
+import com.range.venus.ui.base.ScopedFragment
+import com.range.venus.utils.lazyDeferred
 import kotlinx.android.synthetic.main.fragment_table_pages.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.closestKodein
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
 
-class TablePagesFragment : Fragment(R.layout.fragment_table_pages), KodeinAware {
+class TablePagesFragment : ScopedFragment(R.layout.fragment_table_pages) {
 
     private val INDEX: String = "index"
-    override val kodein by closestKodein()
     private val venusDao: VenusDao by instance()
 
     companion object {
@@ -22,7 +25,7 @@ class TablePagesFragment : Fragment(R.layout.fragment_table_pages), KodeinAware 
         fun newInstance(param: Int) =
             TablePagesFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(INDEX, param)
+                    putString(INDEX, param.toString())
                 }
             }
     }
@@ -30,9 +33,19 @@ class TablePagesFragment : Fragment(R.layout.fragment_table_pages), KodeinAware 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerTable.layoutManager = LinearLayoutManager(context)
+        loadData()
     }
 
-    private fun loadData() {
-//        String sd = "SELECT * FROM table_name WHERE hafta_id = '1' ORDER BY hafta_id, para_id, dars_turi ASC"
+    private fun loadData() = launch {
+        lazyDeferred { venusDao.getLessons(requireArguments().getString(INDEX)!!) }.value.await()
+            .observeForever {
+                if (it != null) {
+                    bindUI(it)
+                } else return@observeForever
+            }
+    }
+
+    private fun bindUI(list: List<TableModel>) = launch(Dispatchers.Main) {
+        recyclerTable.adapter = LessonsAdapter(list)
     }
 }

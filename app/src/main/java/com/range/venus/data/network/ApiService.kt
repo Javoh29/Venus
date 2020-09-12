@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.range.venus.data.model.DebitResponse
 import com.range.venus.data.model.PaymentsResponse
+import com.range.venus.data.model.TableResponse
 import com.range.venus.data.model.UserResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,6 +29,10 @@ interface ApiService {
     @FormUrlEncoded
     @POST("get_sum.php")
     suspend fun getDebit(@FieldMap params: Map<String, String>): Response<DebitResponse>
+
+    @FormUrlEncoded
+    @POST("get_dars_jadvali.php")
+    suspend fun getTable(@FieldMap params: Map<String, String>): Response<TableResponse>
 
     companion object {
         operator fun invoke(): ApiService {

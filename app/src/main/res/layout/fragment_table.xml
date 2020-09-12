@@ -37,7 +37,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imgWallpaper"
                         android:layout_width="match_parent"
-                        android:layout_height="230dp"
+                        android:layout_height="200dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_wallpaper"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,7 @@
                         android:id="@+id/frameLine"
                         android:layout_width="3dp"
                         android:layout_height="0dp"
-                        android:layout_marginBottom="70dp"
+                        android:layout_marginBottom="50dp"
                         android:background="@drawable/view_frame_line"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -111,18 +111,6 @@
                         app:layout_constraintStart_toStartOf="@id/frameLine"
                         app:layout_constraintTop_toBottomOf="@id/tvUniverName" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvWeekType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:layout_marginHorizontal="10dp"
-                        android:text="Mahraj"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -135,7 +123,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
+                android:id="@+id/viewPagerTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="45dp" />

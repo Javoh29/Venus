@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.range.venus.data.db.entities.DebitModel
 import com.range.venus.data.db.entities.PaymentModel
+import com.range.venus.data.db.entities.TableModel
 import com.range.venus.data.db.entities.UserModel
 
 @Dao
@@ -41,5 +42,14 @@ interface VenusDao {
 
     @Query("DELETE FROM debit_table")
     fun deleteDebit()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLessons(model: TableModel)
+
+    @Query("select * from lessons_table where haftaId = :weekID ORDER BY paraId, darsTuri ASC")
+    fun getLessons(weekID: String): LiveData<List<TableModel>>
+
+    @Query("DELETE FROM lessons_table")
+    fun deleteLessons()
 
 }

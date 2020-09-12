@@ -17,6 +17,7 @@ class TableViewModel : ViewModel(), Observable {
 
     private var view: View? = null
     private var venusDao: VenusDao? = null
+    var message = MutableLiveData<Int>()
 
     @Bindable
     val tvStudentName = MutableLiveData<String>()

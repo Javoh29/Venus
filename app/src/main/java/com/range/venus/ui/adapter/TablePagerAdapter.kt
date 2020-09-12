@@ -13,7 +13,7 @@ class TablePagerAdapter(private val listTitle: List<String>, fm: FragmentManager
     }
 
     override fun getItem(position: Int): Fragment {
-        return TablePagesFragment.newInstance(position)
+        return TablePagesFragment.newInstance(position+1)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
