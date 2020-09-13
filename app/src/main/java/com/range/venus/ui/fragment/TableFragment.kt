@@ -1,5 +1,6 @@
 package com.range.venus.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,9 @@ import kotlinx.android.synthetic.main.fragment_table.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TableFragment: Fragment(), KodeinAware {
 
@@ -43,12 +47,26 @@ class TableFragment: Fragment(), KodeinAware {
         list.addAll(resources.getStringArray(R.array.Weeks))
         viewPagerTable.adapter = TablePagerAdapter(list, childFragmentManager)
         tabLayout.setViewPager(viewPagerTable)
+        viewPagerTable.currentItem = getWeekDay()
 
         viewModel.message.observe(viewLifecycleOwner, {
             if (it != null) {
                 Toast.makeText(requireContext(), getString(it), Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getWeekDay(): Int {
+        return when(SimpleDateFormat("EEEE", Locale("uz", "UZ")).format(Date())) {
+            "dushanba" -> 0
+            "seshanba" -> 1
+            "chorshanba" -> 2
+            "payshanba" -> 3
+            "juma" -> 4
+            "Shanba" -> 6
+            else -> 0
+        }
     }
 
 }
