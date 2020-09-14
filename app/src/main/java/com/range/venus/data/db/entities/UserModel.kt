@@ -12,8 +12,10 @@ data class UserModel(
     val fakulteti: String,
     @SerializedName("fio")
     val fio: String,
-    @SerializedName("guruhi")
-    val guruhi: String,
+    @SerializedName("guruh_id")
+    val guruhId: String,
+    @SerializedName("guruh_nomi")
+    val guruhName: String,
     @SerializedName("Id")
     val id: String,
     @SerializedName("kursi")

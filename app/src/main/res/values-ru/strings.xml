@@ -43,6 +43,11 @@
     <string name="text_pracrice">Практика</string>
     <string name="text_lab">Лаборатория</string>
     <string name="text_room">Аудитория</string>
+    <string name="text_cancel">Назад</string>
+    <string name="text_ok">Да</string>
+    <string name="text_enter_date">Введите дату</string>
+    <string name="text_coming_time">Время\nприбытия</string>
+    <string name="text_out_time">Время\nушло</string>
 
     <array name="Weeks">
         <item>Понедельник</item>

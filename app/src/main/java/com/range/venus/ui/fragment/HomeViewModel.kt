@@ -42,18 +42,26 @@ class HomeViewModel : ViewModel(), Observable {
     @Bindable
     val tvGroupName = MutableLiveData<String>()
 
-    fun setView(mView: View, mVenusDao: VenusDao, api: ApiService, unit: UnitProvider, mActivity: Activity) {
+    fun setView(
+        mView: View,
+        mVenusDao: VenusDao,
+        api: ApiService,
+        unit: UnitProvider,
+        mActivity: Activity
+    ) {
         view = mView
         venusDao = mVenusDao
         apiService = api
         unitProvider = unit
         activity = mActivity
         userID = unit.getUserID()
-        loadData()
+        if (isLoadData) {
+            loadData()
+        }
     }
 
     private fun loadData() = viewModelScope.launch(Dispatchers.IO) {
-        if (isLoadData && unitProvider!!.isOnline()) {
+        if (unitProvider!!.isOnline()) {
             try {
                 viewModelScope.launch(Dispatchers.Main) { showDialog.value = true }
                 val params: HashMap<String, String> = HashMap()
@@ -97,12 +105,25 @@ class HomeViewModel : ViewModel(), Observable {
                 }
 
                 params.clear()
-                params["guruh_id"] = "1"
+                params["guruh_id"] = response3.body()!![0].guruhId
                 val response4 = apiService?.getTable(params)
                 if (response4!!.isSuccessful && response4.body()!!.size >= 5) {
                     venusDao?.deleteLessons()
                     response4.body()!!.forEach {
                         venusDao?.insertLessons(it)
+                    }
+                } else {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        message.value = R.string.text_err_loading_data
+                    }
+                }
+                params.clear()
+                params["user_id"] = userID
+                val response5 = apiService?.getAtten(params)
+                if (response5!!.isSuccessful && response5.body()!!.isNotEmpty()) {
+                    venusDao?.deleteAtten()
+                    response5.body()!!.forEach {
+                        venusDao?.insertAtten(it)
                     }
                     isLoadData = false
                     viewModelScope.launch(Dispatchers.Main) {
@@ -119,6 +140,9 @@ class HomeViewModel : ViewModel(), Observable {
 
             } catch (e: Exception) {
                 viewModelScope.launch(Dispatchers.Main) { showDialog.value = false }
+                viewModelScope.launch(Dispatchers.Main) {
+                    message.value = R.string.text_err_loading_data
+                }
             }
         }
         getUser()
@@ -130,18 +154,24 @@ class HomeViewModel : ViewModel(), Observable {
             GlobalScope.launch(Dispatchers.Main) {
                 tvStudentName.value = model.fio
                 tvUniverName.value = model.universiteti
-                tvGroupName.value = model.guruhi
+                tvGroupName.value = model.guruhName
             }
         } else return@launch
     }
 
     fun openSoon() {
-        Navigation.findNavController(view!!).navigate(HomeFragmentDirections.actionHomeFragmentToTableFragment())
+        Navigation.findNavController(view!!)
+            .navigate(HomeFragmentDirections.actionHomeFragmentToTableFragment())
     }
 
     fun openContract() {
         Navigation.findNavController(view!!)
-                .navigate(HomeFragmentDirections.actionHomeFragmentToContractFragment())
+            .navigate(HomeFragmentDirections.actionHomeFragmentToContractFragment())
+    }
+
+    fun openAtten() {
+        Navigation.findNavController(view!!)
+            .navigate(HomeFragmentDirections.actionHomeFragmentToAttenFragment())
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

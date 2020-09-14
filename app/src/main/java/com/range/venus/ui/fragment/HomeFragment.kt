@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.range.venus.App
 import com.range.venus.R
 import com.range.venus.data.db.VenusDao
 import com.range.venus.data.network.ApiService

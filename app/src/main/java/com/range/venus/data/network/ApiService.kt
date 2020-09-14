@@ -2,10 +2,7 @@ package com.range.venus.data.network
 
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.range.venus.data.model.DebitResponse
-import com.range.venus.data.model.PaymentsResponse
-import com.range.venus.data.model.TableResponse
-import com.range.venus.data.model.UserResponse
+import com.range.venus.data.model.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -13,7 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
@@ -33,6 +29,10 @@ interface ApiService {
     @FormUrlEncoded
     @POST("get_dars_jadvali.php")
     suspend fun getTable(@FieldMap params: Map<String, String>): Response<TableResponse>
+
+    @FormUrlEncoded
+    @POST("get_davomat.php")
+    suspend fun getAtten(@FieldMap params: Map<String, String>): Response<AttenResponse>
 
     companion object {
         operator fun invoke(): ApiService {

@@ -5,10 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.range.venus.data.db.entities.DebitModel
-import com.range.venus.data.db.entities.PaymentModel
-import com.range.venus.data.db.entities.TableModel
-import com.range.venus.data.db.entities.UserModel
+import com.range.venus.data.db.entities.*
 
 @Dao
 interface VenusDao {
@@ -51,5 +48,14 @@ interface VenusDao {
 
     @Query("DELETE FROM lessons_table")
     fun deleteLessons()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAtten(model: AttenModel)
+
+    @Query("select * from atten_table where kelganVaqti >= :date1 and ketganVaqti <= :date2")
+    fun getAtten(date1: String, date2: String): LiveData<List<AttenModel>>
+
+    @Query("DELETE FROM atten_table")
+    fun deleteAtten()
 
 }

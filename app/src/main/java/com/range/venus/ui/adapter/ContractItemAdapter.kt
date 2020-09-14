@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.range.venus.R
 import com.range.venus.data.db.entities.PaymentModel
-import com.range.venus.data.model.ItemModel
 import com.range.venus.databinding.ItemContractContainerBinding
 import java.text.DecimalFormat
 

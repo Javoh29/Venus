@@ -18,6 +18,8 @@ class TableViewModel : ViewModel(), Observable {
     private var view: View? = null
     private var venusDao: VenusDao? = null
     var message = MutableLiveData<Int>()
+    val date = MutableLiveData<String>()
+    val isOpen = MutableLiveData<Boolean>()
 
     @Bindable
     val tvStudentName = MutableLiveData<String>()
@@ -27,6 +29,9 @@ class TableViewModel : ViewModel(), Observable {
 
     @Bindable
     val tvGroupName = MutableLiveData<String>()
+
+    @Bindable
+    val tvDate = MutableLiveData<String>()
 
     fun setView(mView: View, mVenusDao: VenusDao) {
         view = mView
@@ -40,13 +45,17 @@ class TableViewModel : ViewModel(), Observable {
             GlobalScope.launch(Dispatchers.Main) {
                 tvStudentName.value = model.fio
                 tvUniverName.value = model.universiteti
-                tvGroupName.value = model.guruhi
+                tvGroupName.value = model.guruhName
             }
         } else return@launch
     }
 
     fun onBack() {
         Navigation.findNavController(view!!).popBackStack()
+    }
+
+    fun openDialog() {
+        isOpen.value = true
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

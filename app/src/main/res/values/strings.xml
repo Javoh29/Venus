@@ -44,6 +44,11 @@
     <string name="text_pracrice">Amaliyot</string>
     <string name="text_lab">Laboratory</string>
     <string name="text_room">Xona</string>
+    <string name="text_cancel">Ortga</string>
+    <string name="text_ok">Xa</string>
+    <string name="text_enter_date">Sanani kiriting</string>
+    <string name="text_coming_time">Kelgan\nvaqti</string>
+    <string name="text_out_time">Ketgan\nvaqti</string>
 
     <array name="Weeks">
         <item>Dushanba</item>

@@ -81,7 +81,7 @@ class ContractViewModel : ViewModel(), Observable {
                 viewModelScope.launch(Dispatchers.Main) {
                     tvStudentName.value = model.fio
                     tvUniverName.value = model.universiteti
-                    tvGroupName.value = "${model.yonalishi}, ${model.guruhi}"
+                    tvGroupName.value = "${model.yonalishi}, ${model.guruhName}"
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     course = model.kursi.toInt()
