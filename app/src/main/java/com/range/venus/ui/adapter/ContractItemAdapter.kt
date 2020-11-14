@@ -14,23 +14,22 @@ class ContractItemAdapter(private val listModel: List<PaymentModel>) : RecyclerV
 
     class ContractViewHolder(val binding: ItemContractContainerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val numFormat = DecimalFormat("#,####.##")
+        private val numFormat = DecimalFormat("#,###.##")
         @SuppressLint("SetTextI18n")
         fun bindUI(model: PaymentModel) {
-            binding.tvBank.text = model.tolovchi
-            binding.tvInfo.text = model.gazna
             binding.tvDate.text = model.sana
-            if (model.turi != "0"){
-                binding.tvSom.text = "-" + numFormat.format(model.summa.toInt())
+            if (model.turi == "0"){
+                binding.tvSom.text = numFormat.format(model.summa.toInt())
                 binding.frameLine.setBackgroundResource(R.drawable.view_frame_line_dark)
                 binding.layout.setBackgroundResource(R.drawable.img_item_debit)
-                binding.tvBank.setTextColor(binding.root.resources.getColor(R.color.colorDark))
-                binding.tvInfo.setTextColor(binding.root.resources.getColor(R.color.colorDark))
                 binding.tvDate.setTextColor(binding.root.resources.getColor(R.color.colorDark))
                 binding.tvSom.setTextColor(binding.root.resources.getColor(R.color.colorDark))
                 binding.som.setTextColor(binding.root.resources.getColor(R.color.colorDark))
+                binding.tvType.setTextColor(binding.root.resources.getColor(R.color.colorDark))
+                binding.tvType.text = binding.root.context.getString(R.string.text_debitor)
             } else {
                 binding.tvSom.text = "+" + numFormat.format(model.summa.toInt())
+                binding.tvType.text = binding.root.context.getString(R.string.text_kreditor)
             }
         }
     }

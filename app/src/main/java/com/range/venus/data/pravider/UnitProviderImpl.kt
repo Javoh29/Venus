@@ -9,6 +9,7 @@ class UnitProviderImpl(private val context: Context) : UnitProvider, PreferenceP
 
     private val USER_ID = "userID"
     private val PASSWORD = "password"
+    private val language = "LANGUAGE"
 
     override suspend fun isOnline(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
@@ -37,6 +38,14 @@ class UnitProviderImpl(private val context: Context) : UnitProvider, PreferenceP
 
     override fun getPassword(): String {
         return preferences.getString(PASSWORD, "")!!
+    }
+
+    override fun saveLang(lang: Boolean) {
+        preferences.edit().putBoolean(language, lang).apply()
+    }
+
+    override fun getLang(): Boolean {
+        return preferences.getBoolean(language, true)
     }
 
 }

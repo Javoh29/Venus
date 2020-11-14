@@ -1,6 +1,7 @@
 package com.range.venus.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.Observer
@@ -57,7 +58,7 @@ class ContractPagesFragment : Fragment(R.layout.fragment_contract_pages), Kodein
     }
 
     private fun bindUI(list: List<PaymentModel>) {
-        GlobalScope.launch(Dispatchers.Main) {
+        requireActivity().runOnUiThread {
             recyclerView.adapter =  ContractItemAdapter(list)
         }
     }

@@ -26,14 +26,6 @@ interface ApiService {
     @POST("get_sum.php")
     suspend fun getDebit(@FieldMap params: Map<String, String>): Response<DebitResponse>
 
-    @FormUrlEncoded
-    @POST("get_dars_jadvali.php")
-    suspend fun getTable(@FieldMap params: Map<String, String>): Response<TableResponse>
-
-    @FormUrlEncoded
-    @POST("get_davomat.php")
-    suspend fun getAtten(@FieldMap params: Map<String, String>): Response<AttenResponse>
-
     companion object {
         operator fun invoke(): ApiService {
             val logging: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(

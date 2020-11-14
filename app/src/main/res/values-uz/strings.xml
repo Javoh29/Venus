@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_id_num">ИД рақам</string>
+    <string name="text_password">Пароль</string>
+    <string name="text_enter">Кириш</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_contract_graph">Контракт ҳисоби</string>
+    <string name="text_attendance">Давомат</string>
+    <string name="text_som">сўм</string>
+    <string name="text_err_id_enter">ИД рақамини киритинг</string>
+    <string name="text_err_password_enter">Парольни киритинг</string>
+    <string name="text_wrong_password">ИД ёки Пароль нотўғри</string>
+    <string name="text_err_connect">Интернет билан алоқа йўқ</string>
+    <string name="text_loading_data">Маълумотлар юкланмоқда</string>
+    <string name="text_err_loading_data">Маълумотларни юклашда муаммо юз берди</string>
+    <string name="text_data_loaded">Маълумотлар юкланди</string>
+    <string name="text_debit">қарздор</string>
+    <string name="text_credit">ҳақдор</string>
+    <string name="text_yan">Январь</string>
+    <string name="text_fev">Февраль</string>
+    <string name="text_mar">Март</string>
+    <string name="text_apr">Апрель</string>
+    <string name="text_may">Май</string>
+    <string name="text_jun">Июнь</string>
+    <string name="text_jul">Июль</string>
+    <string name="text_avg">Август</string>
+    <string name="text_snt">Сентябрь</string>
+    <string name="text_okt">Октябрь</string>
+    <string name="text_nyb">Ноябрь</string>
+    <string name="text_dek">Декабрь</string>
+    <string name="text_debitor">Контракт ҳисобланди</string>
+    <string name="text_kreditor">Тўлов қабул қилинди</string>
+    <string name="text_not_found">Ушбу оралиқда маълумот топилмади</string>
+
+    <array name="Weeks">
+        <item>Душанба</item>
+        <item>Сешанба</item>
+        <item>Чоршанба</item>
+        <item>Пайшанба</item>
+        <item>Жума</item>
+        <item>Шанба</item>
+    </array>
+</resources>

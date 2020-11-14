@@ -1,16 +1,18 @@
 package com.range.venus.ui.fragment
 
 import android.annotation.SuppressLint
-import android.view.View
+import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigation
 import com.range.venus.R
 import com.range.venus.data.db.VenusDao
 import com.range.venus.data.model.DateModel
+import com.range.venus.data.network.ApiService
+import com.range.venus.data.pravider.UnitProvider
 import com.range.venus.utils.lazyDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,26 +22,24 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @SuppressLint("SimpleDateFormat")
-class ContractViewModel : ViewModel(), Observable {
+class ContractViewModel(
+    private val context: Context,
+    private val apiService: ApiService,
+    private val venusDao: VenusDao,
+    private val unitProvider: UnitProvider
+) : ViewModel(), Observable {
 
-    private var view: View? = null
-    private var venusDao: VenusDao? = null
     private val decimalFormat: DecimalFormat = DecimalFormat("###,###.##")
-    private var course: Int = 0
     private val simpleYear = SimpleDateFormat("yyyy")
     private val simpleMoth = SimpleDateFormat("MM")
     private val simpleDate = SimpleDateFormat("MM.yyyy")
-    val message = MutableLiveData<String>()
-    val dialogTop = MutableLiveData<Boolean>()
-    val listDate = MutableLiveData<List<DateModel>>()
-    val radioChecked = MutableLiveData<Int>()
-    val listYear: ArrayList<String> = ArrayList()
+    private var userID: String = unitProvider.getUserID()
+    val message = MutableLiveData<Int>()
+    val listDate = ArrayList<DateModel>()
+    val blockUser = MutableLiveData<Boolean>()
+    val changeLang = MutableLiveData<Boolean>()
+    val update = MutableLiveData<Boolean>()
 
-    @Bindable
-    val spinnerVisible = MutableLiveData<Int>()
-
-    @Bindable
-    val selectYear = MutableLiveData<Int>()
 
     @Bindable
     val tvStudentName = MutableLiveData<String>()
@@ -51,55 +51,121 @@ class ContractViewModel : ViewModel(), Observable {
     val tvGroupName = MutableLiveData<String>()
 
     @Bindable
+    val tvGroup = MutableLiveData<String>()
+
+    @Bindable
     val tvDebit = MutableLiveData<String>()
 
     @Bindable
     val tvSom = MutableLiveData<String>()
 
-    fun setView(mView: View, mVenusDao: VenusDao) {
-        view = mView
-        venusDao = mVenusDao
-        loadData()
+    @Bindable
+    val imgLang = MutableLiveData<Drawable>()
 
-        radioChecked.value = R.id.radioAll
-
-        radioChecked.observeForever {
-            if (it != null) {
-                if (it == R.id.radioMoth) {
-                    spinnerVisible.value = View.VISIBLE
-                } else {
-                    spinnerVisible.value = View.GONE
-                }
+    @SuppressLint("UseCompatLoadingForDrawables")
+    fun loadData() = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            if (unitProvider.getLang()) {
+                imgLang.value = context.getDrawable(R.drawable.ic_uzb)
+            } else {
+                imgLang.value = context.getDrawable(R.drawable.ic_rus)
             }
+        }
+        try {
+            if (unitProvider.isOnline()) {
+                val params: HashMap<String, String> = HashMap()
+                params["user_id"] = userID
+                val response = apiService.getPayments(params)
+
+                if (response.isSuccessful && response.body()!!.isNotEmpty()) {
+                    response.body()!!.forEach {
+                        venusDao.insertPayments(it)
+                    }
+                } else {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        message.value = R.string.text_err_loading_data
+                    }
+                }
+
+                val response2 = apiService.getDebit(params)
+                if (response2.isSuccessful && response2.body()!!.isNotEmpty()) {
+                    venusDao.insertDebit(response2.body()!![0])
+                    viewModelScope.launch(Dispatchers.Main) {
+                        tvDebit.value = decimalFormat.format(response2.body()!![0].summa.toInt())
+                        if (response2.body()!![0].summa.substring(0, 1) == "-") {
+                            tvSom.value =
+                                "${context.getString(R.string.text_som)} (${context.getString(R.string.text_debit)})"
+                        } else {
+                            tvSom.value =
+                                "${context.getString(R.string.text_som)} (${context.getString(R.string.text_credit)})"
+                        }
+                    }
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        message.value = R.string.text_err_loading_data
+                    }
+                }
+                params["pass"] = unitProvider.getPassword()
+                val response3 = apiService.checkLogin(params)
+                if (response3.isSuccessful && response3.body()!!.isNotEmpty()) {
+                    venusDao.insertUser(response3.body()!![0])
+                    viewModelScope.launch(Dispatchers.Main) {
+                        tvStudentName.value = response3.body()!![0].fio
+                        tvUniverName.value = response3.body()!![0].universiteti
+                        tvGroupName.value = response3.body()!![0].yonalishi
+                        tvGroup.value = response3.body()!![0].guruhName
+                    }
+                    viewModelScope.launch(Dispatchers.IO) {
+                        bindSortAll()
+                    }
+                } else if (response3.body()!!.isEmpty()) {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        message.value = R.string.text_wrong_password
+                    }
+                    unitProvider.saveUserID("")
+                    unitProvider.savePassword("")
+                    viewModelScope.launch(Dispatchers.Main) {
+                        blockUser.value = true
+                    }
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        message.value = R.string.text_err_loading_data
+                    }
+                }
+            } else {
+                loadDB()
+            }
+        } catch (e: Exception) {
+            loadDB()
         }
     }
 
-    private fun loadData() {
+    private fun loadDB() {
         viewModelScope.launch(Dispatchers.IO) {
-            val model = lazyDeferred { venusDao?.getUser() }.value.await()
+            val model = lazyDeferred { venusDao.getUser() }.value.await()
             if (model != null) {
                 viewModelScope.launch(Dispatchers.Main) {
                     tvStudentName.value = model.fio
                     tvUniverName.value = model.universiteti
-                    tvGroupName.value = "${model.yonalishi}, ${model.guruhName}"
+                    tvGroupName.value = model.yonalishi
+                    tvGroup.value = model.guruhName
                 }
                 viewModelScope.launch(Dispatchers.IO) {
-                    course = model.kursi.toInt()
                     bindSortAll()
                 }
             } else return@launch
         }
         viewModelScope.launch(Dispatchers.IO) {
-            val model = lazyDeferred { venusDao?.getDebit() }.value.await()
+            val model = lazyDeferred { venusDao.getDebit() }.value.await()
             if (model != null) {
                 viewModelScope.launch(Dispatchers.Main) {
                     tvDebit.value = decimalFormat.format(model.summa.toInt())
                     if (model.summa.substring(0, 1) == "-") {
                         tvSom.value =
-                            "${view!!.context.getString(R.string.text_som)} (${view!!.context.getString(R.string.text_debit)})"
+                            "${context.getString(R.string.text_som)} (${context.getString(R.string.text_debit)})"
                     } else {
                         tvSom.value =
-                            "${view!!.context.getString(R.string.text_som)} (${view!!.context.getString(R.string.text_credit)})"
+                            "${context.getString(R.string.text_som)} (${context.getString(R.string.text_credit)})"
                     }
                 }
             } else return@launch
@@ -107,147 +173,90 @@ class ContractViewModel : ViewModel(), Observable {
     }
 
     private fun bindSortAll() {
+        var y = false
         val list: ArrayList<DateModel> = ArrayList()
-        listYear.clear()
         val currentYear = simpleYear.format(Date()).toInt()
-        val currentDate = simpleDate.format(Date())
-        var oldYear: Int = if (course == 1) {
-            if (simpleMoth.format(Date()).toInt() > 9) {
-                listYear.add(currentYear.toString())
-                simpleYear.format(Date()).toInt()
-            } else {
-                var y = currentYear
-                for (i in 1..course) {
-                    listYear.add(y--.toString())
-                }
-                simpleYear.format(Date()).toInt() - course
-            }
-        } else {
-            var y = currentYear
-            for (i in 1..course) {
-                listYear.add(y--.toString())
-            }
-            simpleYear.format(Date()).toInt() - course
-        }
+        val currentMoth = simpleMoth.format(Date())
+        var nextYear = currentYear + 1
         var end = true
         var moth = 9
         var m: String
+        if (currentMoth.toInt() < 9) {
+            y = true
+            nextYear = currentYear - 1
+        }
         while (end) {
             m = if (moth < 10) {
                 "0$moth"
             } else moth.toString()
-            if (oldYear == currentYear) {
-                list.add(DateModel(textDate = getMoth(moth), formatDate = "${m}.$oldYear"))
-            } else {
-                list.add(
-                    DateModel(
-                        textDate = getMoth(moth) + " $oldYear",
-                        formatDate = "${m}.$oldYear"
-                    )
-                )
-            }
-            when {
-                currentDate == "$m.${oldYear}" -> {
-                    end = false
-                }
-                moth == 12 -> {
-                    moth = 1
-                    oldYear++
-                }
-                else -> moth++
-            }
-        }
-        viewModelScope.launch(Dispatchers.Main) {
-            listDate.value = list
-        }
-    }
-
-    private fun bindSortYear() {
-        val list: ArrayList<DateModel> = ArrayList()
-        listYear.forEach {
-            list.add(DateModel(textDate = "$it ${view!!.context.getString(R.string.text_year)}", formatDate = it))
-        }
-        viewModelScope.launch(Dispatchers.Main) {
-            listDate.value = list
-        }
-    }
-
-    private fun bindSortMoth() {
-        val list: ArrayList<DateModel> = ArrayList()
-        if (listYear[selectYear.value!!] == simpleYear.format(Date())) {
-            val moth: Int = simpleMoth.format(Date()).toInt()
-            if (course == 1) {
-                if (moth >= 9) {
-                    for (i in 9..moth) {
-                        list.add(DateModel(textDate = getMoth(i), formatDate = "${i}.${listYear[selectYear.value!!]}"))
-                    }
+            if (moth in 1..8) {
+                if (y) {
+                    list.add(DateModel(textDate = getMoth(moth), formatDate = "${m}.$currentYear"))
                 } else {
-                    for (i in 1..moth) {
-                        list.add(DateModel(textDate = getMoth(i), formatDate = "${i}.${listYear[selectYear.value!!]}"))
-                    }
+                    list.add(
+                        DateModel(
+                            textDate = getMoth(moth) + " $nextYear",
+                            formatDate = "${m}.$nextYear"
+                        )
+                    )
                 }
             } else {
-                for (i in 1..moth) {
-                    list.add(DateModel(textDate = getMoth(i), formatDate = "${i}.${listYear[selectYear.value!!]}"))
+                if (y) {
+                    list.add(
+                        DateModel(
+                            textDate = getMoth(moth) + " $nextYear",
+                            formatDate = "${m}.$nextYear"
+                        )
+                    )
+                } else {
+                    list.add(
+                        DateModel(
+                            textDate = getMoth(moth),
+                            formatDate = "${m}.$nextYear"
+                        )
+                    )
                 }
             }
-        } else {
-            for (i in 1..12) {
-                list.add(DateModel(textDate = "${getMoth(i)} ${listYear[selectYear.value!!]}", formatDate = "${i}.${listYear[selectYear.value!!]}"))
+            if (currentMoth.toInt() == moth) {
+                end = false
             }
+            if (moth > 11) {
+                moth = 0
+            }
+            moth++
         }
         viewModelScope.launch(Dispatchers.Main) {
-            listDate.value = list
+            listDate.addAll(list)
+            update.value = true
         }
     }
 
     private fun getMoth(moth: Int): String {
         return when (moth) {
-            1 -> view!!.context.getString(R.string.text_yan)
-            2 -> view!!.context.getString(R.string.text_fev)
-            3 -> view!!.context.getString(R.string.text_mar)
-            4 -> view!!.context.getString(R.string.text_apr)
-            5 -> view!!.context.getString(R.string.text_may)
-            6 -> view!!.context.getString(R.string.text_jun)
-            7 -> view!!.context.getString(R.string.text_jul)
-            8 -> view!!.context.getString(R.string.text_avg)
-            9 -> view!!.context.getString(R.string.text_snt)
-            10 -> view!!.context.getString(R.string.text_okt)
-            11 -> view!!.context.getString(R.string.text_nyb)
-            12 -> view!!.context.getString(R.string.text_dek)
+            1 -> context.getString(R.string.text_yan)
+            2 -> context.getString(R.string.text_fev)
+            3 -> context.getString(R.string.text_mar)
+            4 -> context.getString(R.string.text_apr)
+            5 -> context.getString(R.string.text_may)
+            6 -> context.getString(R.string.text_jun)
+            7 -> context.getString(R.string.text_jul)
+            8 -> context.getString(R.string.text_avg)
+            9 -> context.getString(R.string.text_snt)
+            10 -> context.getString(R.string.text_okt)
+            11 -> context.getString(R.string.text_nyb)
+            12 -> context.getString(R.string.text_dek)
             else -> ""
         }
     }
 
-    fun openDialog() {
-        dialogTop.value = true
-    }
-
-    fun closeDialog() {
-        dialogTop.value = false
-    }
-
-    fun enterDialog() {
-        when (radioChecked.value) {
-            R.id.radioYear -> bindSortYear()
-            R.id.radioMoth -> bindSortMoth()
-            R.id.radioAll -> bindSortAll()
-        }
-        dialogTop.value = false
-    }
-
-    fun onBack() {
-        Navigation.findNavController(view!!).popBackStack()
+    fun changeLanguage() {
+        unitProvider.saveLang(!unitProvider.getLang())
+        changeLang.value = true
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        view = null
     }
 }

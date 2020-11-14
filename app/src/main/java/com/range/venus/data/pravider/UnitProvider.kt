@@ -11,4 +11,8 @@ interface UnitProvider {
     fun savePassword(pass: String)
 
     fun getPassword(): String
+
+    fun saveLang(lang: Boolean)
+
+    fun getLang(): Boolean
 }

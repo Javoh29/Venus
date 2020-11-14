@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.range.venus.R
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 
 abstract class BaseActivity(private val layoutID: Int): AppCompatActivity(), KodeinAware {
 

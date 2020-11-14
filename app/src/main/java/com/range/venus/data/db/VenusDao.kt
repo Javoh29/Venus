@@ -40,22 +40,4 @@ interface VenusDao {
     @Query("DELETE FROM debit_table")
     fun deleteDebit()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLessons(model: TableModel)
-
-    @Query("select * from lessons_table where haftaId = :weekID ORDER BY paraId, darsTuri ASC")
-    fun getLessons(weekID: String): LiveData<List<TableModel>>
-
-    @Query("DELETE FROM lessons_table")
-    fun deleteLessons()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAtten(model: AttenModel)
-
-    @Query("select * from atten_table where kelganVaqti >= :date1 and ketganVaqti <= :date2")
-    fun getAtten(date1: String, date2: String): LiveData<List<AttenModel>>
-
-    @Query("DELETE FROM atten_table")
-    fun deleteAtten()
-
 }

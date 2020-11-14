@@ -7,8 +7,8 @@ import androidx.room.RoomDatabase
 import com.range.venus.data.db.entities.*
 
 @Database(
-    entities = [UserModel::class, PaymentModel::class, DebitModel::class, TableModel::class, AttenModel::class],
-    version = 7,
+    entities = [UserModel::class, PaymentModel::class, DebitModel::class],
+    version = 1,
     exportSchema = false
 )
 abstract class VenusDatabase: RoomDatabase() {

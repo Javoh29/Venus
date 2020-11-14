@@ -37,40 +37,21 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imgWallpaper"
                         android:layout_width="match_parent"
-                        android:layout_height="230dp"
+                        android:layout_height="220dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_wallpaper"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgBack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.onBack()}"
-                        android:padding="15dp"
-                        android:src="@drawable/ic_back"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgCalendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> viewModel.openDialog()}"
-                        android:padding="15dp"
-                        android:src="@drawable/ic_calendar"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <FrameLayout
                         android:id="@+id/frameLine"
                         android:layout_width="3dp"
                         android:layout_height="0dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/view_frame_line"
                         app:layout_constraintBottom_toTopOf="@id/tvDebit"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgBack" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvStudentName"
@@ -95,11 +76,14 @@
                         android:layout_marginTop="5dp"
                         android:drawableStart="@drawable/ic_univer"
                         android:drawablePadding="5dp"
+                        android:ellipsize="end"
                         android:fontFamily="@font/roboto_medium"
                         android:gravity="center_vertical"
+                        android:maxLines="3"
                         android:text="@{viewModel.tvUniverName}"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
+                        app:layout_constraintBottom_toTopOf="@id/tvGroupName"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/frameLine"
                         app:layout_constraintTop_toTopOf="@id/frameLine" />
@@ -111,23 +95,43 @@
                         android:layout_marginHorizontal="15dp"
                         android:drawableStart="@drawable/ic_student"
                         android:drawablePadding="5dp"
+                        android:ellipsize="end"
                         android:fontFamily="@font/roboto_medium"
                         android:gravity="center_vertical"
+                        android:maxLines="2"
                         android:text="@{viewModel.tvGroupName}"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
+                        app:layout_constraintBottom_toTopOf="@id/tvGroup"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/frameLine"
                         app:layout_constraintTop_toBottomOf="@id/tvUniverName" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvGroup"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:drawableStart="@drawable/ic_users"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center_vertical"
+                        android:text="@{viewModel.tvGroup}"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="@id/frameLine"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/frameLine"
+                        app:layout_constraintTop_toBottomOf="@id/tvGroupName" />
 
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:background="@drawable/frame_gradient"
-                        app:layout_constraintTop_toTopOf="@id/tvDebit"
                         app:layout_constraintBottom_toBottomOf="@id/tvDebit"
+                        app:layout_constraintEnd_toEndOf="@id/tvSom"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/tvSom"/>
+                        app:layout_constraintTop_toTopOf="@id/tvDebit" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvDebit"
@@ -155,99 +159,16 @@
                         app:layout_constraintStart_toEndOf="@id/tvDebit"
                         app:layout_constraintTop_toTopOf="@id/tvDebit" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/dialogTop"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/img_wallpaper2"
-                    android:visibility="gone"
-                    app:layout_collapseMode="parallax">
-
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgClose"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:src="@drawable/ic_close"
-                        android:onClick="@{()-> viewModel.closeDialog()}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgOk"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:src="@drawable/ic_checked"
-                        android:onClick="@{()-> viewModel.enterDialog()}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <RadioGroup
-                        android:id="@+id/radioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/imgLang"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginHorizontal="15dp"
-                        android:layout_marginBottom="15sp"
-                        android:theme="@style/RadioButton"
-                        android:checkedButton="@={viewModel.radioChecked}"
+                        android:layout_marginVertical="5dp"
+                        android:onClick="@{()->viewModel.changeLanguage()}"
+                        android:src="@{viewModel.imgLang}"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgClose">
-
-                        <RadioButton
-                            android:id="@+id/radioYear"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:layout_marginVertical="5dp"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="@string/text_sort_for_year"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioMoth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:layout_marginVertical="5dp"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="@string/text_sort_for_moth"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioAll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:layout_marginVertical="5dp"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="@string/text_sort_for_all"
-                            android:textColor="@android:color/white"
-                            android:textSize="15sp" />
-
-                    </RadioGroup>
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/spinnerYear"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:gravity="center"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:theme="@style/MySpinner"
-                        android:entries="@{viewModel.listYear}"
-                        android:spinnerMode="dialog"
-                        android:visibility="@{viewModel.spinnerVisible}"
-                        android:selectedItemPosition="@={viewModel.selectYear}"
-                        app:layout_constraintBottom_toBottomOf="@id/radioGroup"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/radioGroup" />
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -270,8 +191,8 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:background="@android:color/white"
                 android:layout_gravity="center_horizontal"
+                android:background="@android:color/white"
                 app:stl_clickable="true"
                 app:stl_defaultTabBackground="?attr/selectableItemBackground"
                 app:stl_defaultTabTextAllCaps="false"
